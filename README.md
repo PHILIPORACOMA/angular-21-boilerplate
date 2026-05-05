@@ -1,59 +1,99 @@
-# Angular21Boilerplate
+# Angular 21 Auth Boilerplate
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+A comprehensive Angular 21 boilerplate project featuring authentication, user management, and role-based access control.
 
-## Development server
+## Project Architecture
 
-To start a local development server, run:
+This project follows the traditional **NgModule-based** architecture. It uses:
+- **NgModules** for organization and lazy loading.
+- **HTTP Interceptors** for JWT handling and error management.
+- **Fake Backend** for local development without an external API.
 
-```bash
-ng serve
+---
+
+## Recent Fixes & Configuration Changes
+
+The project was recently updated to resolve an issue where modules and components were not being recognized. Below are the details of the changes made.
+
+### 1. Bootstrap Alignment (Standalone -> NgModule)
+
+The application was mistakenly configured to bootstrap as a **Standalone** application, which caused it to ignore the `AppModule` and all its declarations.
+
+**Before (Incorrect Standalone Bootstrap in `main.ts`):**
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig)
+  .catch((err) => console.error(err));
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**After (Correct NgModule Bootstrap in `main.ts`):**
+```typescript
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/app.module';
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch((err) => console.error(err));
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 2. Component Structure Correction
 
+The root component was switched from the standalone `App` component to the proper `AppComponent` which includes the application's layout, navigation, and alert system.
+
+- **Removed Standalone Files:** `src/app/app.ts`, `src/app/app.config.ts`, `src/app/app.routes.ts`, `src/app/app.html`, `src/app/app.css`.
+- **Restored Root Component:** `src/app/app.component.ts` (and its associated template/styles).
+
+### 3. Profile Module Fix
+
+A build error was resolved in the Profile module where the component template filename did not match the class configuration.
+
+- **Change:** Renamed `src/app/profile/detail.component.html` to `src/app/profile/details.component.html`.
+- **Reason:** The `DetailsComponent` was looking for `details.component.html`, causing a compilation failure.
+
+### 4. Persistent Alerts for Verification
+
+The simulated "email" alerts for verification and password reset were disappearing too quickly for users to click the links.
+
+- **Change:** Modified `src/app/_helpers/fake-backend.ts` to set `{ autoClose: false }` for these specific alerts.
+- **Result:** Alerts containing verification and reset links will now stay on screen until manually closed or the link is clicked.
+
+---
+
+## Features
+
+- **Authentication:** Login, Registration, Email Verification.
+- **Password Management:** Forgot Password, Reset Password.
+- **User Profile:** View and update account details.
+- **Admin Panel:** User management (List, Create, Edit, Delete).
+- **Security:**
+  - `AuthGuard`: Protects routes based on authentication status and roles.
+  - `JwtInterceptor`: Automatically attaches JWT tokens to requests.
+  - `ErrorInterceptor`: Handles 401/403 errors and redirects to login.
+
+## Getting Started
+
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server:**
+   ```bash
+   npm start
+   ```
+   The app will open at `http://localhost:4200/`.
+
+3. **Build for Production:**
+   ```bash
+   npm run build
+   ```
+   The output will be in the `dist/angular-21-boilerplate` directory.
+
+## Testing
+
+Run unit tests via Karma:
 ```bash
-ng generate --help
+npm test
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
