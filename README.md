@@ -59,6 +59,16 @@ The simulated "email" alerts for verification and password reset were disappeari
 - **Change:** Modified `src/app/_helpers/fake-backend.ts` to set `{ autoClose: false }` for these specific alerts.
 - **Result:** Alerts containing verification and reset links will now stay on screen until manually closed or the link is clicked.
 
+### 5. UI Hang Fix (Change Detection)
+
+The application was experiencing an issue where the "Validating token..." state in the Reset Password and Verify Email components would hang indefinitely when using the Fake Backend.
+
+- **Issue:** Asynchronous responses from the Fake Backend (which includes a 500ms delay) were not automatically triggering Angular's change detection in certain scenarios.
+- **Change:** 
+    - Imported `ChangeDetectorRef` into `ResetPasswordComponent` and `VerifyEmailComponent`.
+    - Explicitly called `this.cdr.detectChanges()` after token validation and form submission state changes.
+- **Result:** The UI now updates immediately as soon as the backend response is received, resolving the hanging state.
+
 ---
 
 ## Features
