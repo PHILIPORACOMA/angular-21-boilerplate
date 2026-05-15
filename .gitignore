@@ -43,3 +43,9 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
+# --- IPT-2026 ---
+.env
+.env.local
+.env,*.local
+config.json
+/src/environments/environment.custom.ts
