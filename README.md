@@ -1,13 +1,59 @@
-# Angular 21 Auth Boilerplate
+# IPT - Angular 21 Auth Boilerplate
 
-A comprehensive Angular 21 boilerplate project featuring authentication, user management, and role-based access control.
+A comprehensive full-stack authentication system (Angular 21 + Node.js/MySQL) featuring user management and role-based access control.
+
+## 🚀 Live Demo & Documentation
+
+- **Live Frontend:** [https://your-frontend-name.onrender.com](https://your-frontend-name.onrender.com)
+- **Live Backend API:** [https://your-backend-name.onrender.com](https://your-backend-name.onrender.com)
+- **Swagger API Docs:** [https://your-backend-name.onrender.com/api-docs](https://your-backend-name.onrender.com/api-docs)
+
+---
 
 ## Project Architecture
 
 This project follows the traditional **NgModule-based** architecture. It uses:
 - **NgModules** for organization and lazy loading.
 - **HTTP Interceptors** for JWT handling and error management.
-- **Fake Backend** for local development without an external API.
+- **Fake Backend** for local development (Stage A) and **Live API Integration** for production (Stage B).
+
+---
+
+## Getting Started
+
+### 1. Installation
+```bash
+npm install
+```
+
+### 2. Local Testing (Stage A - Fake Backend)
+To test the UI logic without a real server:
+- Ensure `fakeBackendProvider` is enabled in `src/app/app.module.ts`.
+- Run `npm start`.
+
+### 3. Integration Testing (Stage B - Live Backend)
+To connect to your Node.js/MySQL API:
+- Disable `fakeBackendProvider` in `src/app/app.module.ts`.
+- Update `src/environments/environment.ts` with your backend URL.
+- Run `npm start`.
+
+### 4. Build for Production
+```bash
+npm run build
+```
+The output directory will be `dist/ipt-2026-frontend`.
+
+---
+
+## Deployment Configuration (Render)
+
+### Frontend (Static Site)
+- **Build Command:** `npm ci && npm run build`
+- **Publish Directory:** `dist/ipt-2026-frontend`
+- **SPA Rewrite Rule:** 
+  - Source: `/*` 
+  - Destination: `/index.html` 
+  - Action: `Rewrite`
 
 ---
 
